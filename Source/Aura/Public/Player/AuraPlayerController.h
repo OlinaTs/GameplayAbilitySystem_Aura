@@ -9,7 +9,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
-
+class IEnemyInterface;
 
 
 /**
@@ -22,7 +22,7 @@ class AURA_API AAuraPlayerController : public APlayerController
 
 public:
 	AAuraPlayerController();
-	
+	virtual void Tick(float DeltaTime) override;
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -36,5 +36,10 @@ private:
 
 	// we have to link this function with the MoveAction variable to move our character in response to input
 	void Move(const FInputActionValue& InputActionValue);
-	
+
+	void CursorTrace();
+	// pointer for the actor we're hovering over this frame
+	IEnemyInterface* ThisActor;
+	// pointer for the actor we hovered over last frame
+	IEnemyInterface* LastActor;
 };
