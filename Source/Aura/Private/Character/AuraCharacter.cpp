@@ -2,9 +2,10 @@
 
 
 #include "Character/AuraCharacter.h"
-
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/AuraPlayerController.h"
+#include "UI/HUD/AuraHUD.h"
 
 AAuraCharacter::AAuraCharacter()
 {
@@ -44,4 +45,14 @@ void AAuraCharacter::InitAbilityActorInfo()
 	// we initialize the Ability System Component and Attribute set in the AuraCharacter
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+	
+	// in order to access the AAuraHUD and get InitOverlay(), we need the PlayerController
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		if (AAuraHUD* AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+		{
+			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
+	
 }

@@ -39,7 +39,7 @@ private:
 
 	void CursorTrace();
 	// pointer for the actor we're hovering over this frame
-	IEnemyInterface* ThisActor;
+	TObjectPtr<IEnemyInterface> ThisActor;
 	// pointer for the actor we hovered over last frame
-	IEnemyInterface* LastActor;
+	TObjectPtr<IEnemyInterface> LastActor;
 };
