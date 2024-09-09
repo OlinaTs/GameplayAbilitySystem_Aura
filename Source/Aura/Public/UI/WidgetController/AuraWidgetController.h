@@ -45,6 +45,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(FWidgetControllerParams& WCParams);
 	virtual void BroadcastInitialValues();
+	virtual void BindCallbacksToDependencies();
 protected:
 	/** The Widget Controller will receive the data from these variables to broadcast to our UserWidgets */
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController");

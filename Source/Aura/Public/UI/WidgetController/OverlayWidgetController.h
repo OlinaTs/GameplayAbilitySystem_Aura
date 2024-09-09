@@ -18,11 +18,19 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 {
 	GENERATED_BODY()
 public:
+	/** we call it in the AuraHUD in the InitOverlay() */
 	virtual void BroadcastInitialValues() override;
+	
+	/** we call it in the AuraHUD in the GetOverlayWidgetController() */
+	virtual void BindCallbacksToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnHealthChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnMaxHealthChangedSignature OnMaxHealthChanged;
+
+protected:
+	void HealthChanged(const FOnAttributeChangeData& Data) const;
+	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 };
