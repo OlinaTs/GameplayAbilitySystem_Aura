@@ -13,10 +13,7 @@ AAuraEffectActor::AAuraEffectActor()
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 	
-
 }
-
-
 
 void AAuraEffectActor::BeginPlay()
 {
@@ -34,33 +31,83 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
     // AddSourceObject(what object caused this effect)
 	EffectContextHandle.AddSourceObject(this);
 	// FGameplayEffectSpecHandle allows you to access detailed Specifications of a gameplay effect to apply and manipulate an effect dynamically
-	FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
-	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+
+	// INFO* Once you've applied a GameplayEffect, that GameplayEffect becomes active and
+	//... these apply functions return a Handle to that Effect, that we can use for removing it
+	//... if it's an InfiniteGameplayEffect
+
+	
+	const bool bIsInfinite = EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite;
+	if(bIsInfinite && InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+	{
+		ActiveEffectHandles.Add(ActiveEffectHandle, TargetASC);
+	}
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 {
-	if (InstantApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
 	}
 
-	if (DurationApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	}
+
+	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
 	}
 }
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 {
-	if (InstantApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
 	}
 
-	if (DurationApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	}
+
+	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+	}
+
+	// we remove the ActiveGameplayEffect from that AbilitySystemComponent that we linked up with it
+	// ... when we added the key-value pair ActiveEffectHandles.Add(ActiveEffectHandle, TargetASC)
+	// ... when we applied the effect 
+	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+	{
+		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+		if (!IsValid(TargetASC)) return;
+
+		TArray<FActiveGameplayEffectHandle> HandlesToRemove;
+
+		// we check our Map and see if it contains a Key-value pair that has an ASC that matches 
+		// ... the ASC of the EndOverlapActor
+		for (TTuple<FActiveGameplayEffectHandle, UAbilitySystemComponent*> HandlePair : ActiveEffectHandles)
+		{
+			if (TargetASC == HandlePair.Value)
+			{
+				// ... if it does, we remove the ActiveGameplayEffect 
+				TargetASC->RemoveActiveGameplayEffect(HandlePair.Key, 1);
+				//... and mark that handle to be removed from that Map
+				HandlesToRemove.Add(HandlePair.Key);
+			}
+		}
+		// we now remove the handle from that Map
+		for (FActiveGameplayEffectHandle& Handle : HandlesToRemove)
+		{
+			ActiveEffectHandles.FindAndRemoveChecked(Handle);
+		}
 	}
 }
 
