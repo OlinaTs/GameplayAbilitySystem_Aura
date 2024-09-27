@@ -31,7 +31,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
     // AddSourceObject(what object caused this effect)
 	EffectContextHandle.AddSourceObject(this);
 	// FGameplayEffectSpecHandle allows you to access detailed Specifications of a gameplay effect to apply and manipulate an effect dynamically
-	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, EffectContextHandle);
 	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
 	// INFO* Once you've applied a GameplayEffect, that GameplayEffect becomes active and
