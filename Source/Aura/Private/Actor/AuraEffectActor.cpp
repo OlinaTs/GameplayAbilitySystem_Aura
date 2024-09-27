@@ -99,7 +99,7 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 			{
 				// ... if it does, we remove the ActiveGameplayEffect 
 				TargetASC->RemoveActiveGameplayEffect(HandlePair.Key, 1);
-				//... and mark that handle to be removed from that Map
+				//... and mark that handle, by adding it to an array we created, to be later removed from that array
 				HandlesToRemove.Add(HandlePair.Key);
 			}
 		}
