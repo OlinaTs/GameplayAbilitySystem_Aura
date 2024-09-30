@@ -14,9 +14,9 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
 
-	for(const FGameplayTag& Tag : TagContainer)
-	{
-		const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Red, Msg);
-	}
+	// we broadcast the Delegate here and...
+	// in the OverlayWidgetController.cpp in the BindCallbacksToDependencies() we have a lamda
+	// that will fire off in response to this delegate
+	EffectAssetTags.Broadcast(TagContainer);
 }
+ 

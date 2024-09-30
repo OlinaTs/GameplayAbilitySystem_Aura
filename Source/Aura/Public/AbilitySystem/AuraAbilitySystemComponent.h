@@ -6,6 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /* AssetTags */)
+
 /**
  * 
  */
@@ -18,7 +20,7 @@ public:
 	/** when this function is called, we know the Ability Actor Info has been set */
 	void AbilityActorInfoSet();
 
-	
+	FEffectAssetTags EffectAssetTags;
 protected:
 	/** WE CREATE THE void EffectApplied() from the following
 	 * 'Delegate for when an effect is applied'
