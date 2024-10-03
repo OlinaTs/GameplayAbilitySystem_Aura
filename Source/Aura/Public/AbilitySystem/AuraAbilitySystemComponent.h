@@ -21,6 +21,7 @@ public:
 	void AbilityActorInfoSet();
 
 	FEffectAssetTags EffectAssetTags;
+	
 protected:
 	/** WE CREATE THE void EffectApplied() from the following
 	 * 'Delegate for when an effect is applied'
