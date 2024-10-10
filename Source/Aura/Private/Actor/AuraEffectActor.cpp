@@ -1,4 +1,4 @@
-// Copyright Mazi Studios
+ // Copyright Mazi Studios
 
 
 #include "Actor/AuraEffectActor.h"
@@ -12,7 +12,6 @@ AAuraEffectActor::AAuraEffectActor()
 	PrimaryActorTick.bCanEverTick = false;
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
-	
 }
 
 void AAuraEffectActor::BeginPlay()
@@ -30,7 +29,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
     // AddSourceObject(what object caused this effect)
 	EffectContextHandle.AddSourceObject(this);
-	// FGameplayEffectSpecHandle allows you to access detailed Specifications of a gameplay effect to apply and manipulate an effect dynamically
+	// FGameplayEffectSpecHandle allows you to access detailed Specifications of a Gameplay Effect to apply and manipulate an effect dynamically
 	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, EffectContextHandle);
 	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
