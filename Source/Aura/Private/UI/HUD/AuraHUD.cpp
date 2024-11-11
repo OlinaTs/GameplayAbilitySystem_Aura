@@ -1,9 +1,11 @@
+
 // Copyright Mazi Studios
 
 
 #include "UI/HUD/AuraHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 
@@ -12,16 +14,26 @@
 // and if it has, it won't be null and we return it
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(FWidgetControllerParams& WCParams)
 {
-	if(OverlayWidgetController == nullptr)
+	if (OverlayWidgetController == nullptr)
 	{
 		// we create a new OverlayWidgetController
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
 		OverlayWidgetController->BindCallbacksToDependencies();
-
-		return OverlayWidgetController;
 	}
 	return OverlayWidgetController;
+}
+
+UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuWidgetController(FWidgetControllerParams& WCParams)
+{
+	if (AttributeMenuWidgetController == nullptr)
+	{
+		// we create a new AttributeMenuWidgetController
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
+	}
+	return AttributeMenuWidgetController;
 }
 
 void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
@@ -45,5 +57,4 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	// d) we add the widget to the Viewport
 	Widget->AddToViewport();
 }
-
 

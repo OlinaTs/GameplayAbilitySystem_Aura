@@ -23,7 +23,8 @@ public:
 	TObjectPtr<UObject> WidgetController;
 
 protected:
-	/* when we set the WidgetController we call this function. It's like a BeginPlay() **/
+	/* when we set the WidgetController, we call this function. It's like a BeginPlay() **/
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();
 };
+ 
