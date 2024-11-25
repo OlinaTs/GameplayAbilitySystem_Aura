@@ -52,6 +52,11 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 };
 
+/* typedef is specific to the FGameplayAttribute() signature, but TStaticFuncPtr is generic to any signature chosen
+ * typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr AttributeFuncPtr */
+template <class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  * 
  */
@@ -67,6 +72,10 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	/* we're mapping GameplayTags to each of our Attributes */
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+
+	
 	/*
 	 * Primary Attributes
 	 */
@@ -133,8 +142,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
 
 	/*
- * Vital Attributes 
- */
+    * Vital Attributes 
+    */
 	
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
