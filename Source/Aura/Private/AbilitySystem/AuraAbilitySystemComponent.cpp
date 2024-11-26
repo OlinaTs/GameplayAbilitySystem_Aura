@@ -14,6 +14,18 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	//FString::Printf(TEXT("Tag: %s "), *GameplayTags.Attributes_Secondary_Armor.ToString()));
 }
 
+void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+{
+	for (TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	{
+		// to grant the Abilities, we create an FGameplayAbilitySpec,
+		// and then we give the ability with a function that exists in the Ability System Component the GiveAbility()
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		// GiveAbility(AbilitySpec);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
                                                 const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {

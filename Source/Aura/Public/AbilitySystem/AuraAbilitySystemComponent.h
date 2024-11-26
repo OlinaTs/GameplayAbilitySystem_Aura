@@ -17,13 +17,16 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
-	/** when this function is called, we know the Ability Actor Info has been set */
+	/* when this function is called, we know the Ability Actor Info has been set */
 	void AbilityActorInfoSet();
 
 	FEffectAssetTags EffectAssetTags;
+
+	/* we want to grant the Abilities */
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	
 protected:
-	/** WE CREATE THE void EffectApplied() from the following
+	/* WE CREATE THE void EffectApplied() from the following
 	 * 'Delegate for when an effect is applied'
 	 * DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnGameplayEffectAppliedDelegate,
 	 * UAbilitySystemComponent*, const FGameplayEffectSpec&, FActiveGameplayEffectHandle); */
