@@ -15,6 +15,7 @@ class AURA_API UAuraInputComponent : public UEnhancedInputComponent
 {
 	GENERATED_BODY()
 
+public:
 	template <class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 	void BindAbilityActions(const UAuraInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc);
 };
@@ -25,7 +26,7 @@ void UAuraInputComponent::BindAbilityActions(const UAuraInputConfig* InputConfig
 {
 	check(InputConfig);
 
-	for (const FAuraInputAction& Action: InputConfig->AbilityInputActions)
+	for (const FAuraInputAction& Action : InputConfig->AbilityInputActions)
 	{
 		/* We'll bind the same three function (PressedFunc, ReleasedFunc, HeldFunc)
 		 * to all of our InputActions, and, since we can identify those Inputs by Tag,
