@@ -24,6 +24,9 @@ public:
 
 	/* we want to grant the Abilities */
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
+
+	void AbilityInputTagHeld(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
 protected:
 	/* WE CREATE THE void EffectApplied() from the following
