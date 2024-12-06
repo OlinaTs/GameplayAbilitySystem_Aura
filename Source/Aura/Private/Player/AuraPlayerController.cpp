@@ -17,7 +17,6 @@
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
-
 	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
@@ -26,69 +25,42 @@ void AAuraPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CursorTrace();
+	AutoRun();
+}
+
+void AAuraPlayerController::AutoRun()
+{
+	if(!bAutoRunning) return;
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		// This Vector is the Location on the Spline that is closest to the Controlled Pawn
+		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	}
 }
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if(!CursorHit.bBlockingHit) return;
 
 	// if this cast succeeds, then the Actor we hit implements the IEnemyInterface...
 	// if not, this cast returns null BUT we can use this information
 	// Cast<IEnemyInterface>(CursorHit.GetActor());
-
 	LastActor = ThisActor;
 	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
 
-	/**
-	 * Line trace from cursor. There are several scenarios:
-	 * A. LastActor == null && ThisActor == null (we didn't hover and we're not hovering over an enemy interface)
-	 *    - Do nothing
-	 * B. LastActor == null && ThisActor is valid    
-	 *    - Highlight ThisActor
-	 * C. LastActor is valid && ThisActor == null (we hovered over an enemy in the last frame but we don't in this frame)
-	 *    - Unhighlight LastActor
-	 * D. Both Actors are valid, but LastActor != ThisActor (we're switching from one enemy to the other)
-	 *    - Unhighlight LastActor, and Highlight ThisActor
-	 * E. Both Actors are valid, but they are the same actor
-	 *    - Do nothing
-	 * 
-	 */
-
-	
-	if (LastActor == nullptr)
+	if (ThisActor != LastActor)
 	{
-		if(ThisActor != nullptr)
-		{
-			// Case B
-			ThisActor->HighlightActor();
-		}
-		else
-		{
-			// both are null, do nothing - Case A 
-		}
-	}
-	else // if LastActor is valid
-	{
-		if (ThisActor == nullptr)
-		{
-			// Case C 
-			LastActor->UnHighlightActor();
-		}
-		else // both actors are valid
-		{
-			if (LastActor != ThisActor)
-			{
-				// case D
-				LastActor->UnHighlightActor();
-				ThisActor->HighlightActor();
-			}
-			else
-			{
-				// case E - do nothing
-			}
-		}
+		if (LastActor) LastActor->UnHighlightActor();
+		if (ThisActor) ThisActor->HighlightActor();
 	}
 }
 
@@ -128,7 +100,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	// // then we handle the movement side of things
 	else
 	{
-		APawn* ControlledPawn = GetPawn();
+		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
 		{
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
@@ -137,8 +109,10 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				for (const auto& PointLoc : NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Red, false, 5.f);
 				}
+				// we're checking to see if we're close enough to the last point in the path,
+				// that we know it's a reachable point
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				bAutoRunning = true;
 			}
 		}
@@ -173,10 +147,9 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
 		
-		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		if (CursorHit.bBlockingHit)
 		{
-			CachedDestination = Hit.ImpactPoint;
+			CachedDestination = CursorHit.ImpactPoint;
 		}
 		
 		if (APawn* ControlledPawn = GetPawn())

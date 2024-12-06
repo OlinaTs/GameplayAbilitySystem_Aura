@@ -45,6 +45,7 @@ private:
 	IEnemyInterface* ThisActor;
 	// pointer for the actor we hovered over last frame
 	IEnemyInterface* LastActor;
+	FHitResult CursorHit;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -70,4 +71,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	void AutoRun();
 };
