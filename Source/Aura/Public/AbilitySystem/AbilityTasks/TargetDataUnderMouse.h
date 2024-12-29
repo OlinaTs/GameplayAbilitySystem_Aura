@@ -32,4 +32,6 @@ private:
 
 	/* if we're locally controlled, we call this function and broadcast this delegate */
 	void SendMouseCursorDate();
+
+	void OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag);
 };
