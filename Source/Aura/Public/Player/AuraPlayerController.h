@@ -37,13 +37,20 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
-	// we have to link this function with the MoveAction variable to move our character in response to input
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
+	void ShiftPressed() { bShiftKeyDown = true; };
+	void ShiftReleased() { bShiftKeyDown = false; } ;
+	bool bShiftKeyDown = false;
+
+	/* we have to link this function with the MoveAction variable to move our character in response to input */
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
-	// pointer for the actor we're hovering over this frame
+	/* pointer for the actor we're hovering over this frame */ 
 	IEnemyInterface* ThisActor;
-	// pointer for the actor we hovered over last frame
+	/* pointer for the actor we hovered over last frame */
 	IEnemyInterface* LastActor;
 	FHitResult CursorHit;
 

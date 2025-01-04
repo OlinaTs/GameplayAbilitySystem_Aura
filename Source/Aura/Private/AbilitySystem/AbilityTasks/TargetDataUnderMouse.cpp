@@ -17,7 +17,7 @@ void UTargetDataUnderMouse::Activate()
     if(bIsLocallyControlled)
     {
     	// locally
-	    SendMouseCursorDate();
+	    SendMouseCursorData();
     }
 	else
 	{
@@ -37,7 +37,7 @@ void UTargetDataUnderMouse::Activate()
 	}
 }
 
-void UTargetDataUnderMouse::SendMouseCursorDate()
+void UTargetDataUnderMouse::SendMouseCursorData()
 {
 	// everything within this scope should be predicted. Server allows us to do what we do locally,
 	// and the server will do it when the server knows about it

@@ -80,25 +80,15 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	// if it's not the Left Mouse Button
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagReleased(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 		return;
 	}
 
-	// If we're targeting someone with our cursor,
-	// then we handle the Game Ability side of things
-	if (bTargeting)
-	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagReleased(InputTag);
-		}
-	}
-	// if we're not Targeting someone with our Cursor,
-	// // then we handle the movement side of things
-	else
+	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+
+	// if we're not Targeting someone with our Cursor AND we're not holding down the Shift key,
+	// then we handle the movement side of things
+	if (!bTargeting && !bShiftKeyDown)
 	{
 		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
@@ -125,24 +115,18 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 
-	// If we're targeting someone with our cursor,
-	// then we handle the Game Ability side of things
-	if (bTargeting)
+	// If we're targeting someone with our cursor or holding down the Shift key,
+	// then we tell the Ability System Component to Activate the Ability with this Tag
+	if (bTargeting || bShiftKeyDown)
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	// if we're not Targeting someone with our Cursor,
-	// then we handle the movement side of things
+	// then we handle the Movement side of things
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
@@ -201,6 +185,8 @@ void AAuraPlayerController::SetupInputComponent()
 
 	// we bind the MoveAction (InputComponent) to the function Move()
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AAuraPlayerController::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AAuraPlayerController::ShiftReleased);
 	AuraInputComponent->BindAbilityActions(InputConfig, this, &AAuraPlayerController::AbilityInputTagPressed,  &AAuraPlayerController::AbilityInputTagReleased,  &AAuraPlayerController::AbilityInputTagHeld);
 }
 

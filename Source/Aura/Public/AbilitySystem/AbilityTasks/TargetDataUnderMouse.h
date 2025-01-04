@@ -31,7 +31,7 @@ private:
 	virtual void Activate() override;
 
 	/* if we're locally controlled, we call this function and broadcast this delegate */
-	void SendMouseCursorDate();
+	void SendMouseCursorData();
 
 	void OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag);
 };
