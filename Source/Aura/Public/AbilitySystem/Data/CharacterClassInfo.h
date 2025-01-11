@@ -50,3 +50,4 @@ public:
 	/* we retrieve the information for any given Enum */
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
 };
+ 
