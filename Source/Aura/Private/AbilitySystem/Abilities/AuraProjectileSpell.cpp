@@ -5,8 +5,10 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
+#include "Aura/Public/AuraGameplayTags.h"
 
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -45,6 +47,11 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 		// 2. we create a SpecHandle from the Ability System Component using MakeOutgoingSpec
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+
+		// we have the Tags
+		FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, 50.f);
+		
         // 3. before Finish Spawning, the projectile has its DamageEffectSpecHandle set to the SpecHandle we created 
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 		
