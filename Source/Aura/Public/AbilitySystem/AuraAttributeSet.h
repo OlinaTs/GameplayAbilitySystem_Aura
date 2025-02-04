@@ -22,7 +22,7 @@ struct FEffectProperties
 
 	FGameplayEffectContextHandle EffectContextHandle;
 	
-	/** SOURCE */
+	/* SOURCE */
 
 	UPROPERTY()
 	UAbilitySystemComponent* SourceASC = nullptr;
@@ -37,7 +37,7 @@ struct FEffectProperties
 	ACharacter* SourceCharacter = nullptr;
 	
 
-	/** TARGET */
+	/* TARGET */
 
 	UPROPERTY()
 	UAbilitySystemComponent* TargetASC = nullptr;
@@ -152,14 +152,22 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
+
+	/*
+    * Meta Attributes
+    */
 	
-	/** Replication step 2. we need a RepNotify to accept the old Value */
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
+
+	
+	/* Replication step 2. we need a RepNotify to accept the old Value */
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
 	
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
-
 	
 	UFUNCTION()
 	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
