@@ -140,11 +140,20 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		SetIncomingDamage(0.f);
 		if (LocalIncomingDamage > 0.f)
 		{
-			// this is where we SUBTRACT the LoLocalIncomingDamage from the Health
+			// this is where we SUBTRACT the LocalIncomingDamage from the Health
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.f;
+
+			if (!bFatal)
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				// Props = Object from struct FEffectProperties that contains
+				// the Ability System Component of the Target, the thing being affected
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 }

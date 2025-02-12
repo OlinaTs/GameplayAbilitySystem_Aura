@@ -7,7 +7,9 @@
 #include "CharacterClassInfo.generated.h"
 
 
+class UGameplayAbility;
 class UGameplayEffect;
+
 /* ECharacterClass = a way to distinguish between Character Classes */
 UENUM(BlueprintType)
 enum class ECharacterClass : uint8
@@ -25,7 +27,6 @@ struct FCharacterClassDefaultInfo
 	/* we need a Gameplay Effect to apply our Primary Attributes */
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
 	TSubclassOf<UGameplayEffect> PrimaryAttributes;
-	
 };
 
 /**
@@ -46,6 +47,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
 	TSubclassOf<UGameplayEffect> VitalAttributes;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
+	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 
 	/* we retrieve the information for any given Enum */
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);

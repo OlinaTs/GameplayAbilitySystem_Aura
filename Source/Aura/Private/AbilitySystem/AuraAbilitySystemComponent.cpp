@@ -15,14 +15,14 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 {
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
-		// to grant the Abilities, we create an FGameplayAbilitySpec, and then we give the ability
-		// with a function that exists in the Ability System Component the GiveAbility()
+		// to grant the Abilities, we create an FGameplayAbilitySpec
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 		if (const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
 		{
 			// now, our Startup Abilities are going to have their StartupInputTags
 			// added to the DynamicAbilityTags
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);
+			// we give the ability with a function that exists in the Ability System Component the GiveAbility()
 			GiveAbility(AbilitySpec);
 		}
 	}
