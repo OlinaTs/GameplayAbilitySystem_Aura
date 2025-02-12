@@ -36,7 +36,6 @@ struct FEffectProperties
 	UPROPERTY()
 	ACharacter* SourceCharacter = nullptr;
 	
-
 	/* TARGET */
 
 	UPROPERTY()
