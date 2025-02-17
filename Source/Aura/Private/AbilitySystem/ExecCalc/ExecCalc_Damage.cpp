@@ -1,0 +1,25 @@
+// Copyright Mazi Studios
+
+
+#include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
+
+#include "AbilitySystemComponent.h"
+
+UExecCalc_Damage::UExecCalc_Damage()
+{
+	
+}
+
+void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+{
+	// How this Execution Calculation is going to effect any other Attributes by setting their values
+	
+	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
+	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
+	
+	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
+	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
+
+	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
+}
