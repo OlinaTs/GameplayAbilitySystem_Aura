@@ -151,7 +151,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 			if (bFatal)
 			{
-				// if the CombatInterface is Implemented on the TargetAvatarActor then the Actor dies
+				// if the CombatInterface is Implemented on the TargetAvatarActor, then the Actor dies
 				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
 				if (CombatInterface)
 				{

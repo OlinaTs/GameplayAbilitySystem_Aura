@@ -45,8 +45,9 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		// WE GIVE the Projectile a Gameplay Effect Spec for causing damage
 		// 1. we get the Ability System Component from GetAvatarActorFromActorInfo
 		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
 		// 2. we create a SpecHandle from the Ability System Component using MakeOutgoingSpec
-		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 
 		// we have the Tags
 		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
