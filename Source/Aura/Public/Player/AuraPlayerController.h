@@ -32,7 +32,7 @@ public:
 	/* we dynamically create the DamageText component.
 	 * TargetCharacter in this case = the Enemy. We want the number of Damage to spawn above the Enemy's head */
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter,  bool bBlockedHit, bool bCriticalHit);
 	
 protected:
 	virtual void BeginPlay() override;
