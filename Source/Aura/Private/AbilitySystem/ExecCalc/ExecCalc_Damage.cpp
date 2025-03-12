@@ -83,9 +83,15 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
 	/* standard lines of code to capture tags */
-
-	// get Damage Set by Caller Magnitude
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	
+	float Damage = 0.f;
+	// we're looping through 
+	for (const auto& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key);
+		// if we have multiple Damage Types, we'll add the value set on our SetByCallerMagnitude here
+		Damage += DamageTypeValue;
+	}
 
 	// capture BlockChance on Target, and determine if there was a successful Block
 	float TargetBlockChance = 0;
