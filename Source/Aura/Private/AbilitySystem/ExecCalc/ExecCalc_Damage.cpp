@@ -115,8 +115,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.TargetTags = TargetTags;
 	/* standard lines of code to capture tags */
 
-	// we're looping through to Get Damage Set By Caller Magnitude
-	// and we're also getting the Resistances corresponding to that ResistanceTag
+	// we're looping through to Get Damage Set By Caller Magnitude,
 	float Damage = 0.f;
 	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
 	{
@@ -129,6 +128,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key);
 		
 		float Resistance = 0;
+		// we're capturing the values of our Captured ReistanceAttributes
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureDef, EvaluationParameters, Resistance);
 		Resistance = FMath::Clamp(Resistance, 0.f,100.f);
 
