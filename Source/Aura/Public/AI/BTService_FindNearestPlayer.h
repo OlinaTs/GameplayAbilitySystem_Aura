@@ -21,7 +21,7 @@ protected:
 	// so we can link this up with an actual key that exists in our BlackBoard
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	FBlackboardKeySelector TargetToFollowSelector;
-
+	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	FBlackboardKeySelector DistanceToTargetSelector;
 };
