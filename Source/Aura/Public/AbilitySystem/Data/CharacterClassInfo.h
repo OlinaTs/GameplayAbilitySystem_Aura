@@ -27,6 +27,9 @@ struct FCharacterClassDefaultInfo
 	/* we need a Gameplay Effect to apply our Primary Attributes */
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
 	TSubclassOf<UGameplayEffect> PrimaryAttributes;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
+	TArray<TSubclassOf<UGameplayAbility>> StartUpAbilities;
 };
 
 /**
