@@ -27,16 +27,19 @@ public:
 
 	/* this is a Getter for the Attribute Set */
 	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
-
+	
+	/* Combat Interface */
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-
-	/* handles what specifically happens on the Server */
 	virtual void Die() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+	/* end Combat Interface */
 
 	/* handles what happens to all Clients whenever a Character dies */
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
-
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -46,8 +49,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName WeaponTipSocketName;
 
-	virtual FVector GetCombatSocketLocation() override;
-
+	bool bDead = false;
+	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
