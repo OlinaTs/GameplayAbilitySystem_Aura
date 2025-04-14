@@ -57,13 +57,16 @@ public:
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
-	
-	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
-	
-	FGameplayTag Effects_HitReact;
 
 	FGameplayTag Abilities_Attack;
 
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
+
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	
+	FGameplayTag Effects_HitReact;
 private:
     static FAuraGameplayTags GameplayTags;
 };
