@@ -30,6 +30,7 @@ struct FUIWidgetRow : public FTableRowBase
 
 class UAuraUserWidget;
 class UAbilityInfo;
+class UAuraAbilitySystemComponent;
 
 /** We declare a delegate that can broadcast a float */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
@@ -76,6 +77,8 @@ protected:
 	/* it's going to find the row and return the row, no matter its type */
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+
+	void OnInitializeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemXComponent);
 };
 
 template <typename T>
