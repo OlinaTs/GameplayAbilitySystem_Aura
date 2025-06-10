@@ -29,6 +29,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 
 class UAuraUserWidget;
+class UAbilityInfo;
 
 /** We declare a delegate that can broadcast a float */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
@@ -69,13 +70,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+
 	/* it's going to find the row and return the row, no matter its type */
 	template<typename T>
-	T* GetDataTableRowbyTag(UDataTable* DataTable, const FGameplayTag& Tag);
+	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 };
 
 template <typename T>
-T* UOverlayWidgetController::GetDataTableRowbyTag(UDataTable* DataTable, const FGameplayTag& Tag)
+T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
 {
 	/* we're finding the DataTable Row by TagName because, in the Engine, we used the Tag Name as our Row name,
 	 * so we get the TagName = Tag.GetTagName() to find the row */

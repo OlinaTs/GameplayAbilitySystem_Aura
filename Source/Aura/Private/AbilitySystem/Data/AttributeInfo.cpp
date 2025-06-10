@@ -3,9 +3,11 @@
 
 #include "AbilitySystem/Data/AttributeInfo.h"
 
+#include "Aura/AuraLogChannels.h"
+
 FAuraAttributeInfo UAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& AttributeTag, bool bLogNotFound) const
 {
-	for(const FAuraAttributeInfo& Info : AttributeInformation)
+	for (const FAuraAttributeInfo& Info : AttributeInformation)
 	{
 		if(Info.AttributeTag.MatchesTagExact(AttributeTag))
 		{
@@ -13,9 +15,9 @@ FAuraAttributeInfo UAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& A
 		}
 	}
 
-	if(bLogNotFound)
+	if (bLogNotFound)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't find Info for Attribute Tag [%s]."), *AttributeTag.ToString(), *GetNameSafe(this));
+		UE_LOG(LogAura, Error, TEXT("Can't find Info for Attribute Tag [%s]."), *AttributeTag.ToString(), *GetNameSafe(this));
 	}
 
 	return FAuraAttributeInfo();
