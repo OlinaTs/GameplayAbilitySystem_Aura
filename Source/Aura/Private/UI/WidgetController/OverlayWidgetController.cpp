@@ -95,5 +95,8 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemCo
 		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
 	});
+	
+	// the ForEachAbility function that we created in the AuraAbilitySystemComponent
+	// will execute the BroadcastDelegate and its Lamda 
 	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }

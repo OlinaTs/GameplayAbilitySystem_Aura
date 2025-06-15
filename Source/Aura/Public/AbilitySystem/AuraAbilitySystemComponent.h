@@ -32,15 +32,20 @@ public:
 
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+
+	/*  */
 	void ForEachAbility(const FForEachAbility& Delegate);
 
-	// Insert the AbilitySpec, and we'll find its AbilityTag
+	/* Insert the AbilitySpec, and we'll find its AbilityTag */
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
-	// Insert the AbilitySpec, and we'll find its InputTag
+	/* Insert the AbilitySpec, and we'll find its InputTag */
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	
 protected:
+
+	virtual void OnRep_ActivateAbilities() override;
+	
 	/* WE CREATE THE void EffectApplied() from the following
 	 * 'Delegate for when an effect is applied'
 	 * DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnGameplayEffectAppliedDelegate,
