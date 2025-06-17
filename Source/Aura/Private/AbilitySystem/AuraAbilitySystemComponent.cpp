@@ -23,7 +23,7 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 			// now, our Startup Abilities are going to have their StartupInputTags
 			// added to the DynamicAbilityTags
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);
-			// we give the ability with a function that exists in the Ability System Component the GiveAbility()
+			// we give the Ability using a function that exists in the Ability System Component the GiveAbility()
 			GiveAbility(AbilitySpec);
 		}
 	}
