@@ -74,6 +74,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
 	FAbilityInfoSignature AbilityInfoDelegate;
 
+	/* we'll use the FOnAttributeChangedSignature even though
+	 * the XPPercent is not an Attribute */
+	UPROPERTY(BlueprintAssignable, Category = "GAS|XP")
+	FOnAttributeChangedSignature OnXPPercentChangedDelegate;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
@@ -86,6 +91,10 @@ protected:
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
 	void OnInitializeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
+
+	/* this is the callback function that we'll bind to OnXPChangedDelegate
+	 * (OnXPChangedDelegate exists in the AuraPlayerState) */
+	void OnXPChanged(int32 NewXP) const;
 };
 
 template <typename T>
