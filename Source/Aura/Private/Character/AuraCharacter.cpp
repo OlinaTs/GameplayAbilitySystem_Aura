@@ -19,6 +19,8 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	CharacterClass = ECharacterClass::Elementalist;
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)
@@ -27,7 +29,7 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// Init Ability Actor Info for the Server
 	InitAbilityActorInfo();
-	AddCharacterAbilities();
+	AddCharacterAbilities(); 
 }
 
 void AAuraCharacter::OnRep_PlayerState()
