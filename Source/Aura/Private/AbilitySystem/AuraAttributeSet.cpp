@@ -251,7 +251,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				// AddToAttributePoints()
 				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
 				// AddToSpellPoints()
-				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, SpellPointsReward);
+				IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
 				
 				// fill up Health and Mana
 				SetHealth(GetMaxHealth());
