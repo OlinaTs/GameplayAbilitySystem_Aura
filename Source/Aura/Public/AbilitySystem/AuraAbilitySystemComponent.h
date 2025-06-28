@@ -34,8 +34,7 @@ public:
 
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
-
-	/*  */
+	
 	void ForEachAbility(const FForEachAbility& Delegate);
 
 	/* Insert the AbilitySpec, and we'll find its AbilityTag */
@@ -43,6 +42,11 @@ public:
 
 	/* Insert the AbilitySpec, and we'll find its InputTag */
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+
+	UFUNCTION(Server, Reliable)
+	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
 	
 protected:
 
