@@ -8,6 +8,7 @@
 #include "AuraHUD.generated.h"
 
 
+class USpellMenuWidgetController;
 class UAttributeMenuWidgetController;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -26,6 +27,7 @@ public:
 	
 	UOverlayWidgetController* GetOverlayWidgetController(FWidgetControllerParams& WCParams);
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(FWidgetControllerParams& WCParams);
+	USpellMenuWidgetController* GetSpellMenuWidgetController(FWidgetControllerParams& WCParams);
 
 	/** InitOverlay a) a) constructs the OverlayWidget
 	 * b) constructs the WidgetController
@@ -59,4 +61,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+
+	/* Spell Menu */
+	
+	UPROPERTY()
+	TObjectPtr<USpellMenuWidgetController> SpellMenuWidgetController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
 };
