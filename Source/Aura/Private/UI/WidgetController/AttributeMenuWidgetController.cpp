@@ -41,13 +41,6 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			AttributePointsChangedDelegate.Broadcast(AttributePoints);
 		}
 	);
-
-	AuraPlayerState->OnSpellPointsChangedDelegate.AddLambda(
-		[this](int32 SpellPoints)
-		{
-			SpellPointsChangedDelegate.Broadcast(SpellPoints);
-		}
-	);
 }
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
