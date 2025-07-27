@@ -10,7 +10,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContaine
 // this can be broadcast when the Abilities are given
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/);
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/, int32 /*AbilityLevel*/);
 
 /**
  * 
@@ -49,7 +49,7 @@ public:
 	static FGameplayTag GetStatusFromSpec (const FGameplayAbilitySpec& AbilitySpec);
 	
 	/* Insert the Ability tag and, if this AbilitySystemComponent has that Ability
-	 * with that Tag, we'll return a pointer to an AbiltySpec
+	 * with that Tag, we'll return a pointer to an AbilitySpec
 	 * otherwise we'll return a nullptr */
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 	
@@ -59,6 +59,9 @@ public:
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
 
 	void UpdateAbilityStatuses(int32 Level);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSpendSpellPoints(const FGameplayTag& AbilityTag);
 protected:
 
 	virtual void OnRep_ActivateAbilities() override;
@@ -71,5 +74,5 @@ protected:
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 
 	UFUNCTION(Client, Reliable)
-	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag);
+	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 AbilityLevel);
 };

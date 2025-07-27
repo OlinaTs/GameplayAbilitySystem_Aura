@@ -16,7 +16,6 @@ class UNiagaraComponent;
  */
 UCLASS()
 
-
 class AURA_API AAuraCharacter : public AAuraCharacterBase, public IPlayerInterface
 {
 	GENERATED_BODY()
