@@ -42,6 +42,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpendPointButtonPressed();
 
+	/* when you click a second time on the same globe button of the Spell Menu, you deselect it */
+	UFUNCTION(BlueprintCallable)
+	void GlobeDeselect();
+
 private:
 
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpellPointsButton, bool& bShouldEnableEquipButton);
