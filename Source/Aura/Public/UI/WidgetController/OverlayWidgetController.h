@@ -87,6 +87,8 @@ protected:
 	/* this is the callback function that we'll bind to OnXPChangedDelegate
 	 * (OnXPChangedDelegate exists in the AuraPlayerState) */
 	void OnXPChanged(int32 NewXP);
+
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const;
 };
 
 template <typename T>

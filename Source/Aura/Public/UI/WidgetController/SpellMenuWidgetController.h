@@ -11,6 +11,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignature, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled, FString, DescriptionString, FString, NextLevelDescriptionString);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForEquipSelectionSignature, const FGameplayTag&, AbilityType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpellGlobeReassignedSignature, const FGameplayTag&, AbilityTag);
 
 struct FSelectedAbility
 {
@@ -42,7 +43,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FWaitForEquipSelectionSignature StopWaitingForEquipDelegate;
 
-	/* When we click to one of our SpellGlobeButtons, this function will fire off */
+	UPROPERTY(BlueprintAssignable)
+	FSpellGlobeReassignedSignature SpellGlobeReassignedDelegate;
+
+	/* when we click to one of our SpellGlobeButtons, this function will fire off */
 	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
 
@@ -55,6 +59,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EquipButtonPressed();
+
+	/* when we press a Globe in the Spell Row, we need to know its SlotTag and its AbilityType
+	 * SlotTag = InputTag of that particular Globe we pressed
+	 * AbilityType = AbiliTypeTag of that particular Globe we pressed aka Abilities_Type_Offensive, Abilities_Type_Passive */
+	UFUNCTION(BlueprintCallable)
+	void SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType);
+
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot);
 private:
 
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpellPointsButton, bool& bShouldEnableEquipButton);
@@ -62,4 +74,5 @@ private:
 	int32 CurrentSpellPoints = 0;
 
 	bool bWaitingForEquipSelection = false;
+	FGameplayTag SelectedSlot;
 };

@@ -8,6 +8,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+struct FDamageEffectParams;
 class UAbilityInfo;
 struct FWidgetControllerParams;
 class UAbilitySystemComponent;
@@ -66,6 +67,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySstemLibrary|GameplayMechanics")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
+	
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySstemLibrary|DamageEffect")
+	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams);
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySstemLibrary|GameplayMechanics")
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
