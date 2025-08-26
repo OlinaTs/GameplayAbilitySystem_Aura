@@ -118,6 +118,7 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 				Props.SourceController = Pawn->GetController();
 			}
 		}
+		
 		if (Props.SourceController)
 		{
 			// from a controller we can get the Pawn owning it and cast it to a character

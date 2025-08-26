@@ -74,12 +74,10 @@ public:
 
 	/* we're mapping GameplayTags to each of our Attributes */
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
-
 	
 	/*
 	 * Primary Attributes
 	 */
-	
 	/* Replication step 1. we declare the variable and replicate it >>> ReplicatedUsing = OnRep_Strength */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")
 	FGameplayAttributeData Strength;
