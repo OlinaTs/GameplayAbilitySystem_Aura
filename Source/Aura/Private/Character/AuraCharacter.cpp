@@ -136,8 +136,6 @@ int32 AAuraCharacter::GetPlayerLevel_Implementation()
 void AAuraCharacter::LevelUp_Implementation()
 {
 	MulticastLevelUpParticles();
-
-	
 }
 
 int32 AAuraCharacter::GetAttributePoints_Implementation() const
@@ -175,10 +173,12 @@ void AAuraCharacter::InitAbilityActorInfo()
 	check(AuraPlayerState);
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
-
+	
 	// we initialize the Ability System Component and Attribute set in the AuraCharacter
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+
+	OnAscRegistered.Broadcast(AbilitySystemComponent);
 	
 	// in order to access the AAuraHUD and get InitOverlay(), we need the PlayerController
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
