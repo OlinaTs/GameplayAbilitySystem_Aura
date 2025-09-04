@@ -230,13 +230,12 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 
 		if (bFatal)
 		{
-			// TODO: Use Death Impulse!
-			
 			// if the CombatInterface is Implemented on the TargetAvatarActor, then the Actor dies
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
 			if (CombatInterface)
 			{
-				CombatInterface->Die();
+				FVector Impulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
+				CombatInterface->Die(UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle));
 			}
 			SendXPEvent(Props);
 		}
@@ -247,6 +246,12 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			// Props = Object from struct FEffectProperties that contains
 			// the Ability System Component of the Target, the thing being affected
 			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			
+			const FVector& KnockbackForce = UAuraAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle);
+			if (!KnockbackForce.IsNearlyZero(1.f))
+			{
+				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
+			}
 		}
 
 		const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
