@@ -25,7 +25,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	if (TargetActor->ActorHasTag(FName("Enemy")) && !bApplyEffectsToEnemies) return;
 	
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
-	if(TargetASC == nullptr) return;
+	if (TargetASC == nullptr) return;
 
 	check(GameplayEffectClass);
 	// FGameplayEffectContextHandle = who's causing the effect, who's the target of the effect, is the effect a fire effect, lightning effect

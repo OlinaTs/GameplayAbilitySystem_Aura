@@ -235,7 +235,7 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			if (CombatInterface)
 			{
 				FVector Impulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
-				CombatInterface->Die(UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle));
+				CombatInterface->Die(Impulse);
 			}
 			SendXPEvent(Props);
 		}
