@@ -92,9 +92,15 @@ public:
 	FGameplayTag Abilities_Type_Offensive;
 	FGameplayTag Abilities_Type_Passive;
 	FGameplayTag Abilities_Type_None;
-	
+
+	/* Abilities */
 	FGameplayTag Abilities_Fire_Firebolt;
 	FGameplayTag Abilities_Lightning_Electrocute;
+	FGameplayTag Abilities_Passive_HaloOfProtection;
+
+	/* Passive Spells */
+	FGameplayTag Abilities_Passive_LifeSiphon;
+	FGameplayTag Abilities_Passive_ManaSiphon;
 
 	/* Cooldown */
 	FGameplayTag Cooldown_Fire_Firebolt;

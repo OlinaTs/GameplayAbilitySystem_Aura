@@ -46,6 +46,8 @@ public:
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
+	virtual bool IsBeingShocked_Implementation() const override;
 	/* end Combat Interface */
 
 	// I've declared this Delegate in CombatInterface
@@ -66,6 +68,10 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_Burned, BlueprintReadOnly)
 	bool bIsBurned = false;
 
+	// this boolean refers to the target that receives the impact of the Electrocute spell
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
+	
 	// we override it in AuraCharacter
 	UFUNCTION()
 	virtual void OnRep_Stunned();
@@ -73,6 +79,7 @@ public:
 	// we override it in AuraCharacter
 	UFUNCTION()
 	virtual void OnRep_Burned();
+	
 protected:
 	virtual void BeginPlay() override;
 
