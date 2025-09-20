@@ -64,8 +64,13 @@ public:
 	
 	virtual void Die(const FVector& DeathImpulse) = 0;
 
-	// we create a function with the return type of OnDeathSignature
+	// we create a function with the return type of FOnDeathSignature reference,
+	// and we'll override it in the AuraCharacterBase class
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+
+	// we create a function with the return type of FOnASCRegistered reference,
+	// and we'll override it in AuraCharacterBase class
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsDead() const;
@@ -91,8 +96,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	ECharacterClass GetCharacterClass();
 	
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() = 0;
-
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetInShockLoop(bool bInLoop);
 
