@@ -135,7 +135,7 @@ void USpellMenuWidgetController::EquipButtonPressed()
 	// if the Ability is Equipped, we save the Selected Slot
 	if (SelectedStatus.MatchesTag(FAuraGameplayTags::Get().Abilities_Status_Equipped))
 	{
-		SelectedSlot = GetAuraASC()->GetInputTagFromAbilityTag(SelectedAbility.Ability);
+		SelectedSlot = GetAuraASC()->GetSlotFromAbilityTag(SelectedAbility.Ability);
 	}
 }
 

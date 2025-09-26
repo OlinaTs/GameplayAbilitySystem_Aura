@@ -12,6 +12,7 @@ class UAbilitySystemComponent;
 class UAnimMontage;
 class UNiagaraSystem;
 
+// returns a pointer to the AbilitySystemComponent* that just became valid
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, UAbilitySystemComponent*);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, AActor*, DeadActor);
 

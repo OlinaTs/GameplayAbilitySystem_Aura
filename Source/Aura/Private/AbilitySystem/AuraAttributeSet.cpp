@@ -332,7 +332,7 @@ void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 	SetIncomingXP(0.f);
 
 	// SourceCharacter is the Owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncomingXP
-	if(Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
+	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
 	{
 		const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
 		const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
@@ -343,14 +343,19 @@ void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 		// if we Level Up, then we do the following
 		if (NumLevelUps > 0)
 		{
-			// TODO: Get AttributePointsReward and Get SpellPointsReward
-			// GetAttributePointsReward()
-			const int32 AttributePointsReward = IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel);
-			// GetSpellPointsReward
-			const int32 SpellPointsReward = IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, CurrentLevel);
 			// AddToPlayerLevel()
 			// we add to the Current Level the Number Of Level Ups
 			IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+			
+			int32 SpellPointsReward = 0;
+			int32 AttributePointsReward = 0;
+
+			for (int32 i = 0; i < NumLevelUps; i++)
+			{
+				SpellPointsReward += IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, CurrentLevel + i);
+				AttributePointsReward += IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel + i);
+			}
+			
 			// AddToAttributePoints()
 			IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
 			// AddToSpellPoints()

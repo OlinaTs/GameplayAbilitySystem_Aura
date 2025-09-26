@@ -13,7 +13,7 @@ DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/, int32 /*AbilityLevel*/);
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/, const FGameplayTag& /*Slot*/, const FGameplayTag& /*PreviousTag*/);
 DECLARE_MULTICAST_DELEGATE_OneParam(FDeactivatePassiveAbility, const FGameplayTag& /*AbilityTag*/)
-
+DECLARE_MULTICAST_DELEGATE_TwoParams(FActivatePassiveEffect, const FGameplayTag& /*AbilityTag*/, bool /*bActivate*/)
 /**
  * 
  */
@@ -31,6 +31,7 @@ public:
 	FAbilityStatusChanged AbilityStatusChanged;
 	FAbilityEquipped AbilityEquipped;
 	FDeactivatePassiveAbility DeactivatePassiveAbility;
+	FActivatePassiveEffect ActivatePassiveEffect;
 
 	/* we want to grant the Abilities */
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
@@ -46,22 +47,45 @@ public:
 
 	/* Insert the AbilitySpec, and we'll find its AbilityTag */
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
-
+	
 	/* Insert the AbilitySpec, and we'll find its InputTag */
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	
 	/* Insert the AbilitySpec, and we'll find its Ability Status */
 	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
-
+	
 	/* Insert the Ability Tag, and we'll find its Status Tag */
 	FGameplayTag GetStatusFromAbilityTag(const FGameplayTag& AbilityTag);
+	
+	/* Insert the Ability Tag, and we'll find its Slot aka Input Tag */
+	FGameplayTag GetSlotFromAbilityTag(const FGameplayTag& AbilityTag);
+	
+	/* SlotIsEmpty(Slot) = we want to see if the SpellGlobe down in the Equipped Row
+	 * that we're clicking is Empty or not */
+	bool SlotIsEmpty(const FGameplayTag& Slot);
+	
+	/* This function just checks whether the given ability (Spec) has the Slot(InputTag) */
+	static bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
 
-	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& AbilityTag);
+	static bool AbilityHasAnySlot(const FGameplayAbilitySpec& Spec);
+
+	/* returns whatever AbilitySpec is associated with a given slot */
+	FGameplayAbilitySpec* GetSpecWithSLot(const FGameplayTag& Slot);
+
+	bool IsPassiveAbility(const FGameplayAbilitySpec& Spec) const;
+
+	/* assign the new Slot/InputTag to the Ability */
+	static void AssignSlotToAbility(FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+
+	/* Broadcasts the ActivatePassiveEffect delegate */
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastActivatePassiveEffect(const FGameplayTag& AbilityTag, bool bActivate);
 	
 	/* Insert the Ability tag and, if this AbilitySystemComponent has that Ability
 	 * with that Tag, we'll return a pointer to an AbilitySpec
 	 * otherwise we'll return a nullptr */
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
+	
 	
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 
@@ -76,13 +100,14 @@ public:
 	/* Slot = the InputTag of the SpellGlobe in the EquippedSpellRow we just pressed */
 	UFUNCTION(Server, Reliable)
 	void ServerEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Slot);
-	
+
+	UFUNCTION(Client, Reliable)
 	void ClientEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot);
 
 	bool GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription);
 
 	// we clear the Input Tag from the Slot
-	void ClearSlot(FGameplayAbilitySpec* Spec);
+	static void ClearSlot(FGameplayAbilitySpec* Spec);
 	// clear any Abilities we have of a Given SLot
 	void ClearAbilitiesOfSlot(const FGameplayTag& Slot);
 	static bool AbilityHasSlot(FGameplayAbilitySpec* Spec, const FGameplayTag& Slot);
