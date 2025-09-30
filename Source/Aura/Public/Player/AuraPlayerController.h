@@ -8,6 +8,7 @@
 #include "AuraPlayerController.generated.h"
 
 
+class AMagicCircle;
 class UNiagaraSystem;
 class UDamageTextComponent;
 class UAuraInputConfig;
@@ -34,6 +35,12 @@ public:
 	 * TargetCharacter in this case = the Enemy. We want the number of Damage to spawn above the Enemy's head */
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter,  bool bBlockedHit, bool bCriticalHit);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
+
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -94,4 +101,13 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
+
+	/* we'll call this function in the Tick() */
+	void UpdateMagicCircleLocation();
 };

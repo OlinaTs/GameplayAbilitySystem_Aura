@@ -93,9 +93,11 @@ public:
 	FGameplayTag Abilities_Type_Passive;
 	FGameplayTag Abilities_Type_None;
 
-	/* Abilities */
+	/* Offensive Spells */
 	FGameplayTag Abilities_Fire_Firebolt;
 	FGameplayTag Abilities_Lightning_Electrocute;
+	FGameplayTag Abilities_Arcane_ArcaneShards;
+	
 	FGameplayTag Abilities_Passive_HaloOfProtection;
 
 	/* Passive Spells */
