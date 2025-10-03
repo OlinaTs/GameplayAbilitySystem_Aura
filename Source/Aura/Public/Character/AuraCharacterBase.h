@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
-#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "AuraCharacterBase.generated.h"
 
 class UPassiveNiagaraComponent;
@@ -26,6 +26,8 @@ public:
 	AAuraCharacterBase();
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	/* this is a Getter for the Ability System Component */
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -50,12 +52,15 @@ public:
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 	virtual bool IsBeingShocked_Implementation() const override;
+	virtual FOnDamageSignature& GetOnDamageSignature() override;
 	/* end Combat Interface */
 
 	// I've declared this Delegate in CombatInterface
 	FOnASCRegistered OnAscRegistered;
 	// I've declared this Delegate in CombatInterface
 	FOnDeathSignature OnDeathDelegate;
+	// I've declared this Delegate in CombatInterface
+	FOnDamageSignature OnDamageDelegate;
 
 	/* handles what happens to all Clients whenever a Character dies */
 	UFUNCTION(NetMulticast, Reliable)

@@ -15,6 +15,7 @@ class UNiagaraSystem;
 // returns a pointer to the AbilitySystemComponent* that just became valid
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, UAbilitySystemComponent*);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, AActor*, DeadActor);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDamageSignature, float /* DamageAmount */);
 
 USTRUCT(BlueprintType)
 struct FTaggedMontage
@@ -68,6 +69,9 @@ public:
 	// we create a function with the return type of FOnDeathSignature reference,
 	// and we'll override it in the AuraCharacterBase class
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+	// we create a function with the return type of FOnDamageSignature reference,
+	// and we'll override it in the AuraCharacterBase class
+	virtual FOnDamageSignature& GetOnDamageSignature() = 0;
 
 	// we create a function with the return type of FOnASCRegistered reference,
 	// and we'll override it in AuraCharacterBase class
