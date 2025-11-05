@@ -29,7 +29,7 @@ public:
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(FWidgetControllerParams& WCParams);
 	USpellMenuWidgetController* GetSpellMenuWidgetController(FWidgetControllerParams& WCParams);
 
-	/** InitOverlay a) a) constructs the OverlayWidget
+	/** InitOverlay a) constructs the OverlayWidget
 	 * b) constructs the WidgetController
 	 * c) sets the OverlayWidget's WidgetController
 	 * d) add it to the viewport

@@ -250,6 +250,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		(FName("Abilities.Fire.Firebolt"),
 		FString("Firebolt Ability Tag"));
 
+	GameplayTags.Abilities_Fire_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag
+	(FName("Abilities.Fire.FireBlast"),
+	FString("FireBlast Ability Tag"));
+
 	GameplayTags.Abilities_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag
 		(FName("Abilities.Lightning.Electrocute"),
 		FString("Electrocute Ability Tag"));
@@ -257,9 +261,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag
 		(FName("Abilities.Arcane.ArcaneShards"),
 		FString("Arcane Shards Ability Tag"));
-
-
-
+	
 	/*
 	* Passive Spells
 	*/
@@ -274,7 +276,6 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Passive_ManaSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag
 		(FName("Abilities.Passive.ManaSiphon"),
 		FString("Mana Siphon"));
-	
 	
 	/*
 	* Cooldown
@@ -339,4 +340,12 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Player_Block_CursorTrace = UGameplayTagsManager::Get().AddNativeGameplayTag
 	(FName("Player.Block.CursorTrace"),
 	FString("Block tracing under the cursor"));
+
+	
+	/*
+	* GameplayCues
+	*/
+	GameplayTags.GameplayCue_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag
+	(FName("GameplayCue.FireBlast"),
+	FString("FireBlast GameplayCue Tag"));
 }
