@@ -31,4 +31,28 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
+
+	static void DeleteSlot(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+
+	void TravelToMap(UMVVM_LoadSlot* Slot);
+
+	UPROPERTY(EditDefaultsOnly)
+	FString DefaultMapName;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSoftObjectPtr<UWorld> DefaultMap;
+
+	/* we set the DefaultPlayerStartTag
+	 * in the MVVM_LoadScreen inside NewSlotButtonPressed() */
+	UPROPERTY(EditDefaultsOnly)
+	FName DefaultPlayerStartTag;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+
+protected:
+	virtual void BeginPlay() override;
+
 };

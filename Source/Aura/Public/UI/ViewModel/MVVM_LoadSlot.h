@@ -8,7 +8,7 @@
 #include "MVVM_LoadSlot.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetWidgetSwitcherIndex, int32, WidgetSwitcherIndex);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEnableSelectSlotButton, bool, bEnable);
 /**
  * 
  */
@@ -24,6 +24,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FSetWidgetSwitcherIndex SetWidgetSwitcherIndex;
 
+	UPROPERTY(BlueprintAssignable)
+	FEnableSelectSlotButton EnableSelectSlotButton;
+
 	UPROPERTY()
 	FString LoadSlotName;
 
@@ -33,12 +36,23 @@ public:
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
 
-	/* Field Notifies
-	 * can be linked with the widget using this ViewModel */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
-	FString PlayerName;
-
+	UPROPERTY()
+	FName PlayerStartTag;
+	
 	void SetPlayerName(FString InPlayerName);
+	void SetMapName(FString InMapName);
 
 	FString GetPlayerName() const { return PlayerName; }
+	FString GetMapName() const { return MapName; }
+
+private:
+
+	/* Field Notifies
+	* can be linked with the widget using this ViewModel */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"));
+	FString PlayerName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"));
+	FString MapName;
+	
 };
