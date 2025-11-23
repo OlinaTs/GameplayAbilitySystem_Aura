@@ -33,6 +33,10 @@ public:
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
 
 	static void DeleteSlot(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+	ULoadScreenSaveGame* RetrieveInGameSaveData();
+	
+	/* a function to pass in our SaveObject */
+	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
 
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 

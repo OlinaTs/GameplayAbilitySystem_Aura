@@ -30,12 +30,14 @@ UMVVM_LoadSlot* UMVVM_LoadScreen::GetLoadSlotViewModelByIndex(int32 Index) const
 	return LoadSlots.FindChecked(Index);
 }
 
+// WE'RE SAVING DATA WHEN the New Slot button is pressed
 void UMVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnteredName)
 {
 	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
 
 	LoadSlots[Slot]->SetMapName(AuraGameMode->DefaultMapName);
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
+	LoadSlots[Slot]->SetPlayerLevel(1);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->PlayerStartTag = AuraGameMode->DefaultPlayerStartTag;
 
@@ -89,6 +91,8 @@ void UMVVM_LoadScreen::PlayButtonPressed()
 
 	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(AuraGameMode->GetGameInstance());
 	AuraGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	AuraGameInstance->LoadSlotName = SelectedSlot->LoadSlotName;
+	AuraGameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
 
 	if (IsValid(SelectedSlot))
 	{
@@ -111,12 +115,14 @@ void UMVVM_LoadScreen::LoadData()
 		// we get the SaveSlotStatus from the ULoadScreenSaveGame instanced object named SaveObject
 		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
 
-		// we set the PlayerName from our LoadedData
-		LoadSlot.Value->SetPlayerName(PlayerName);
 		// we set the SlotStatus from our LoadedData
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;
+		// we set the PlayerName from our LoadedData
+		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->InitializeSlot();
+		
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
 		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
+		LoadSlot.Value->SetPlayerLevel(SaveObject->PlayerLevel);
 	}
 }

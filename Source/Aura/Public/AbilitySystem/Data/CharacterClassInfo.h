@@ -48,6 +48,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
 	TMap<ECharacterClass, FCharacterClassDefaultInfo> CharacterClassInformation;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
+	TSubclassOf<UGameplayEffect> PrimaryAttributes_SetByCaller;
+
+	/* This one is for Aura specifically */
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
+	TSubclassOf<UGameplayEffect> SecondaryAttributes_Infinite;
+
 	/* we're sharing the Secondary and Vital Attributes */
 	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
 	TSubclassOf<UGameplayEffect> SecondaryAttributes;

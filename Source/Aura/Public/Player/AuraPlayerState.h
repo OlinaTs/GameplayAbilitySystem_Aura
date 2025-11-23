@@ -13,7 +13,8 @@ class ULevelUpInfo;
 
 /* whenever one of our Stats change, we'll broadcast that to whoever binds to our Delegate.  */
 /* with MULTICAST Delegates we don't need to have a Param name after the variable type */
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChange, int32 /* StatValue */)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /* StatValue */);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged, int32 /* StatValue */, bool /* bLevelUp */)
 
 /**
  * 
@@ -37,10 +38,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 	
-	FOnPlayerStatChange OnXPChangedDelegate;
-	FOnPlayerStatChange OnLevelChangedDelegate;
-	FOnPlayerStatChange OnAttributePointsChangedDelegate;
-	FOnPlayerStatChange OnSpellPointsChangedDelegate;
+	FOnPlayerStatChanged OnXPChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
+	FOnPlayerStatChanged OnAttributePointsChangedDelegate;
+	FOnPlayerStatChanged OnSpellPointsChangedDelegate;
 
 	/* Getters */
     FORCEINLINE int32 GetPlayerLevel() const { return Level; }
@@ -50,12 +51,14 @@ public:
 	
 	/* AddTo */
 	void AddToXP(int32 InXP);
+	/* we'll use this function for Leveling Up */
 	void AddToLevel(int32 InLevel);
 	void AddToAttributePoints (int32 InAttributePoints);
 	void AddToSpellPoints(int32 InSpellPoints);
 
 	/* Setters */
 	void SetXP(int32 InXP);
+	/* we'll use this function for Loading up from disk */
 	void SetLevel(int32 InLevel);
 	void SetAttributePoints(int32 InAttributePoints);
 	void SetSpellPoints(int32 InSpellPoints);
@@ -73,7 +76,7 @@ private:
 	int32 Level = 1;
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_XP)
-	int32 XP = 1;
+	int32 XP = 0;
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_AttributePoints)
 	int32 AttributePoints = 0;
