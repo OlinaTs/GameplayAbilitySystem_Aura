@@ -17,6 +17,41 @@ enum ESaveSlotStatus
 	Taken
 };
 
+USTRUCT()
+struct FSavedActor
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName ActorName = FName();
+
+	UPROPERTY()
+	FTransform Transform = FTransform();
+
+	/* Serialized variables from the Actor - only those marked with SaveGame specifier */
+	UPROPERTY()
+	TArray<uint8> Bytes;
+	
+};
+
+inline bool operator ==(const FSavedActor& Left, const FSavedActor& Right)
+{
+	return Left.ActorName == Right.ActorName;
+}
+
+USTRUCT()
+struct FSavedMap
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FString MapAssetName = FString();
+
+	UPROPERTY()
+	TArray<FSavedActor> SavedActors;
+	
+};
+
 /* this struct defines all the information for saving an Ability */
 USTRUCT(BlueprintType)
 struct FSavedAbility
@@ -110,8 +145,16 @@ public:
 
 	/* Abilities */
 
-	// we're going to fill this Array with Data in
-	// void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+	// we're going to fill this Array with Data
+	// in void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	UPROPERTY()
 	TArray<FSavedAbility> SavedAbilities;
+
+	UPROPERTY()
+	TArray<FSavedMap> SavedMaps;
+	
+	FSavedMap GetSavedMapWithMapName(const FString& InMapName);
+
+	/* we check if our SavedData has a Map with this specific Name yet */
+	bool HasMap(const FString& InMapName);
 };
